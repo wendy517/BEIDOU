@@ -134,7 +134,7 @@ step01_06_construct_bam(){
     # 1. bwa mem  
     ${dir_of_bwa}/bwa mem -t $threads -R '@RG\tID:2019\tPL:illumina\tLB:library\tSM:'"${name}" ${ref_genome_path} $fq1 $fq2 > ${work_path}/${name}_01_bwa_mem_PE.sam 2> >(tee ${work_path}/${name}_01_bwa_mem_PE.log >&2)  
     # 2. sam2bam  
-    ${dir_of_samtools}/samtools view -bh -F 4 -q 30 ${work_path}/${name}_01_bwa_mem_PE.sam |samtools sort -@ $threads -o ${work_path}/${name}_02_bwa_mem_PE.bam  
+    ${dir_of_samtools}/samtools view -bh -F 4 -q 30 ${work_path}/${name}_01_bwa_mem_PE.sam |${dir_of_samtools}/samtools sort -@ $threads -o ${work_path}/${name}_02_bwa_mem_PE.bam  
     ${dir_of_samtools}/samtools flagstat -@ 3 ${work_path}/${name}_02_bwa_mem_PE.bam > ${work_path}/${name}_02_bwa_mem_PE_flagstat.log &  
     merm ${work_path}/${name}_01_bwa_mem_PE.sam  
     }  
