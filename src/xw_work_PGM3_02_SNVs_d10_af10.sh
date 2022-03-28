@@ -61,7 +61,7 @@ ${dir_of_gatk}/gatk --java-options "-Xmx30g -Xms10g" SelectVariants -V ${work_pa
 awk '$7=="PASS"' ${work_path}/${name}_11_SNVs_lofreq_PASS.vcf |awk 'BEGIN{OFS="\t"}{split($8,x,";"); print $1,$2,$4,$5,x[1],x[2],x[3]}' |sed 's/AF=//g' |sed 's/DP=//g' |sed 's/DP4=//g' |awk 'BEGIN{OFS="\t"}{split($7,x,","); print $1,$2,$3,$4,x[1]+x[2],x[3]+x[4],$6,$5}' > ${work_path}/${name}_11_SNVs_lofreq_PASS.txt
 # 11.3 Strelka2
 ${dir_of_gatk}/gatk --java-options "-Xmx30g -Xms10g" SelectVariants -V ${work_path}/${name}_10_SNVs_strelka2_total.vcf.gz -O ${work_path}/${name}_11_SNVs_strelka2_PASS.vcf.gz --exclude-filtered true -select-type SNP
-awk 'BEGIN{OFS="\t"}{if($7=="PASS"&&$5!~",")print $1,$2,$4,$5,$NF}' <(${dir_of_bcftools}/bcftools view -H ${work_path}/${name}_11_SNVs_strelka2_PASS.vcf.gz ) |awk 'BEGIN{OFS="\t"}{split($5,x,":"); print $1,$2,$3,$4,x[2],x[5]}' |sed 's/,/\t/g' |awk 'BEGIN{OFS="\t"}{print $0,$6/$7}' > ${work_path}/${name}_11_SNVs_strelka2_PASS.txt
+awk 'BEGIN{OFS="\t"}{if($7=="PASS"&&$5!~",")print $1,$2,$4,$5,$NF}' <(${dir_of_bcftools}/bcftools view -H ${work_path}/${name}_11_SNVs_strelka2_PASS.vcf.gz ) |awk 'BEGIN{OFS="\t"}{split($5,x,":"); print $1,$2,$3,$4,x[6],x[4]}' |sed 's/,/\t/g' |awk 'BEGIN{OFS="\t"}{if($7>0) print $0,$6/$7}' > ${work_path}/${name}_11_SNVs_strelka2_PASS.txt
 
 # 12. depth ≥ 10/20 Allele Frequency ≥ 0.1
 # 12.1 gatk d10_af10/d10_af10
